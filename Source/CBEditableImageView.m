@@ -38,8 +38,20 @@
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-    [super drawRect:self.bounds];
+    NSRect bounds = self.bounds;
+    CGFloat boundsWidth = bounds.size.width;
+    CGFloat boundsHeight = bounds.size.height;
+    CGFloat imageWidth = self.image.size.width;
+    CGFloat imageHeight = self.image.size.height;
     
+    CGFloat max = MAX(boundsWidth, boundsHeight);
+    CGFloat ratio = MAX(imageWidth / imageHeight, imageHeight / imageWidth);
+    CGFloat width = ceil(max * ratio);
+    CGFloat height = ceil(max * ratio);
+    [self.image drawInRect:CGRectMake(CGRectGetMidX(bounds) - width / 2,
+                                      CGRectGetMidY(bounds) - height / 2,
+                                      width, height)];
+
     if (self.isHovering && self.isEnabled) {
         
         // draw black
